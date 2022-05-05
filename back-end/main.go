@@ -5,24 +5,25 @@ import (
 	"back-end/db"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-pg/pg/v10"
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/extra/bundebug"
 )
 
-type TestPerson struct {
-	Name string
-	Age string
-}
-
-func initApi() (*pg.DB, *gin.Engine) {
-	conf := config.NewConfig()
-	database := db.Connect(conf.Addr, conf.User, conf.Password, conf.Database)
+func initApi() (*bun.DB, *gin.Engine) {
+	cfg := config.NewConfig()
+	database := db.Connect(cfg.URI)
 	r := gin.Default()
+	
+	database.AddQueryHook(bundebug.NewQueryHook(
+		bundebug.WithVerbose(true),
+		bundebug.FromEnv("BUNDEBUG"),
+	))
 	
 	return database, r
 }
 
 func main() {
-	db, r := initApi()
+	_, r := initApi()
 	
 	r.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
@@ -31,24 +32,7 @@ func main() {
 	})
 	
 	r.POST("/writeTest", func(ctx *gin.Context) {
-		conn := db.Conn()
-		defer conn.Close()
-		
-		person := &TestPerson{
-			Name: "Test",
-			Age: "Test",
-		}
-		
-		_, err := conn.Model(person).Insert()
-		
-		if err != nil {
-			panic(err)
-		}
-		
-		ctx.JSON(200, gin.H{
-			"status": "success",
-			"person": person,
-		})
+		//
 	})
 	
 	r.Run()

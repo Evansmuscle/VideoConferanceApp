@@ -2,21 +2,26 @@ package config
 
 import (
 	"os"
+
+	"github.com/golobby/dotenv"
 )
 
-type config struct {
-	Addr     string
-	User     string
-	Password string
-	Database string
+type Config struct {
+	URI     string `env:"URI"`
 }
 
-func NewConfig() *config {
-	cfg := config{
-		Addr:     os.Getenv("Addr"),
-		User:     os.Getenv("User"),
-		Password: os.Getenv("Password"),
-		Database: os.Getenv("Database"),
+func NewConfig() *Config {
+	file, err := os.Open(".env")
+	cfg := Config{}
+	
+	if err != nil {
+		panic(err)
+	}
+	
+	err = dotenv.NewDecoder(file).Decode(&cfg)
+	
+	if err != nil {
+		panic(err)
 	}
 	
 	return &cfg

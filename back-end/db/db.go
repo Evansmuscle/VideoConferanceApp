@@ -1,14 +1,17 @@
 package db
 
-import "github.com/go-pg/pg/v10"
+import (
+	"database/sql"
 
-func Connect(addr, user, pass, database string) (db *pg.DB) {
-	db = pg.Connect(&pg.Options{
-		Addr: addr,
-		User: user,
-		Password: pass,
-		Database: database,
-	})
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/pgdialect"
+	"github.com/uptrace/bun/driver/pgdriver"
+)
+
+func Connect(dsn string) (db *bun.DB) {
+	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
+	
+	db = bun.NewDB(sqldb, pgdialect.New())
 
 	return
 }
