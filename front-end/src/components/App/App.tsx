@@ -2,8 +2,11 @@ import "./App.scss";
 
 import React from "react";
 
+// Pages
+import CallPage from "../../pages/CallPage";
+
 const App = () => {
-  return <div>Hi mom!</div>;
+  return <CallPage />;
 };
 
 export default App;
