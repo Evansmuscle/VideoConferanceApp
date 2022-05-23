@@ -3,8 +3,18 @@ import React from "react";
 // Emotion CSS
 import styled from "@emotion/styled";
 
+// Formik
+import { Formik, FormikHelpers } from "formik";
+
+// Icons
+import SendIcon from "../../icons/send.svg";
+
 interface Props {
   //
+}
+
+interface InitialValues {
+  message: string;
 }
 
 const ChatContainer = styled.div`
@@ -38,16 +48,62 @@ const MessageContainer = styled.div`
 const InputContainer = styled.div`
   height: 12.5%;
   width: 100%;
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  padding: 1rem;
 `;
 
-const Chat: React.FC<Props> = ({}) => {
+const Input = styled.input`
+  width: 80%;
+  height: 120%;
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem;
+
+  &:focus {
+    border: none;
+  }
+
+  &:focus-visible {
+    border: none;
+  }
+`;
+
+const InputSendIcon = styled.img`
+  cursor: pointer;
+`;
+
+const InputSend = styled.button`
+  background-color: transparent;
+  border: none;
+  margin-left: auto;
+`;
+
+const initialValues: InitialValues = { message: "" };
+
+const Chat: React.FC<Props> = () => {
+  const onMessageSent = (
+    values: InitialValues,
+    formikHelpers: FormikHelpers<InitialValues>
+  ) => {
+    //
+  };
+
   return (
     <ChatContainer>
       <Header>
         <HeaderText>Chat Room</HeaderText>
       </Header>
       <MessageContainer>Hi</MessageContainer>
-      <InputContainer>Hi</InputContainer>
+      <Formik initialValues={initialValues} onSubmit={onMessageSent}>
+        <InputContainer>
+          <Input autoFocus />
+          <InputSend type="submit">
+            <InputSendIcon src={SendIcon} />
+          </InputSend>
+        </InputContainer>
+      </Formik>
     </ChatContainer>
   );
 };

@@ -9,6 +9,7 @@ import { containerFactory } from "../../utils";
 import MicrophoneIcon from "../../icons/microphone.svg";
 import HeadphoneIcon from "../../icons/headphones.svg";
 import PhoneDisabledIcon from "../../icons/phone_disabled.svg";
+import ControlIcon from "../ControlIcon";
 
 interface Props {
   //
@@ -26,36 +27,9 @@ const Container = containerFactory(
 const ControlsContainer: React.FC<Props> = ({}) => {
   return (
     <Container>
-      <img
-        src={MicrophoneIcon}
-        alt="Microphone Icon"
-        style={{
-          color: "white",
-          fill: "white",
-          stroke: "white",
-          marginRight: "1rem",
-        }}
-      />
-      <img
-        src={HeadphoneIcon}
-        alt="Microphone Icon"
-        style={{
-          color: "white",
-          fill: "white",
-          stroke: "white",
-          marginRight: "1rem",
-        }}
-      />
-      <img
-        src={PhoneDisabledIcon}
-        alt="Microphone Icon"
-        style={{
-          color: "white",
-          fill: "white",
-          stroke: "white",
-          marginRight: "1rem",
-        }}
-      />
+      <ControlIcon iconName={MicrophoneIcon} />
+      <ControlIcon iconName={HeadphoneIcon} />
+      <ControlIcon iconName={PhoneDisabledIcon} exit />
     </Container>
   );
 };
